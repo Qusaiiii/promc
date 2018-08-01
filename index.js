@@ -729,27 +729,16 @@ var mentionned = message.mentions.members.first();
     }
 });
 
-client.on('message',function(message) {
-    let toKick = message.mentions.users.first();
-    let toReason = message.content.split(" ").slice(2).join(" ");
-    let toEmbed = new Discord.RichEmbed()
-   if(message.content.startsWith(prefix + 'kick')) {
-       if(!message.member.hasPermission("KICK_MEMBERS")) return message.reply('**# - You dont have enough permissions!**');
-       if(toKick.bannable) return message.reply("**# - I cannot kick someone with a higher role than me!**");
-       if(!toReason) return message.reply("**# - Supply a reason!**")
-       if(toKick.id === message.author.id) return message.reply("**# You cannot kick yourself!**")
-       if(!message.guild.member(toKick).bannable) return message.reply("**# - I cannot ban this person!**")
-       let toEmbed;
-       toEmbed = new Discord.RichEmbed()
-       .setTitle("You have been kicked from a server!")
-       .setThumbnail(toKick.avatarURL)
-       .addField("**# - Server:**",message.guild.name,true)
-       .addField("**# - Reason:**",toReason,true)
-       .addField("**# - Kicked By:**",message.author,true)
-       if(message.member.hasPermission("KICK_MEMBERS")) return (
-           toKick.sendMessage({embed: toEmbed}).then(() => message.guild.member(toKick).kick()).then(() => message.channel.send(`**# Done! I kicked: ${toKick}**`))
-       )
-       }
+client.on("message", (message) => {
+      if (message.author.bot) return;
+    if (message.content.startsWith('!!delvoice')) {
+        if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.reply("تحتاج لخاصية MANAGE_CHANNELS ");
+
+        let args = message.content.split(' ').slice(1);
+        let channel = message.client.channels.find('name', args.join(' '));
+        if (!channel) return message.reply('**مافي روم بهذا اسم -_-**').catch(console.error);
+        channel.delete()
+    }
 });
 
 client.on("message", message => {
@@ -840,6 +829,49 @@ client.on('message',async message => {
     message.channel.send(iQp);
   }
 });
+client.on('message', message => {
+                    var prefix = "!!";
+
+           if (message.content.startsWith(prefix + "id")) {
+                     if(!message.channel.guild) return message.reply(`هذا الأمر فقط ل السيرفرات ❌`);
+
+                message.guild.fetchInvites().then(invs => {
+      let member = client.guilds.get(message.guild.id).members.get(message.author.id);
+      let personalInvites = invs.filter(i => i.inviter.id === message.author.id);
+      let inviteCount = personalInvites.reduce((p, v) => v.uses + p, 0);
+      var moment = require('moment');
+      var args = message.content.split(" ").slice(1);
+let user = message.mentions.users.first();
+var men = message.mentions.users.first();
+ var heg;
+ if(men) {
+     heg = men
+ } else {
+     heg = message.author
+ }
+var mentionned = message.mentions.members.first();
+  var h;
+ if(mentionned) {
+     h = mentionned
+ } else {
+     h = message.member
+ }
+        moment.locale('ar-TN');
+      var id = new  Discord.RichEmbed()
+       
+    .setColor("#0a0909")
+    .setAuthor(message.author.username, message.author.avatarURL) 
+.addField(': دخولك لديسكورد قبل', `${moment(heg.createdTimestamp).format('YYYY/M/D HH:mm:ss')} **\n** \`${moment(heg.createdTimestamp).fromNow()}\`` ,true) 
+.addField(': انضمامك لسيرفر قبل', `${moment(h.joinedAt).format('YYYY/M/D HH:mm:ss')} \n \`${moment(h.joinedAt).fromNow()}\``, true)
+.addField(': عدد الدعوات', inviteCount,false)
+.setFooter("-")  
+    message.channel.sendEmbed(id);
+})
+}
+    
+
+         
+     });
 
   client.on('message',function(message) {
   if (message.author.bot) return;
@@ -1258,6 +1290,45 @@ const kingmas = [
   }
 });
 
+var prefix = "!!"
+client.on('message', message => {
+  if (message.author.x5bz) return;
+  if (!message.content.startsWith(prefix)) return;
+
+  let command = message.content.split(" ")[0];
+  command = command.slice(prefix.length);
+
+  let args = message.content.split(" ").slice(1);
+
+  if (command == "kick") {
+               if(!message.channel.guild) return message.reply('** This command only for servers**');
+         
+  if(!message.guild.member(message.author).hasPermission("KICK_MEMBERS")) return message.reply("**You Don't Have ` KICK_MEMBERS ` Permission**");
+  if(!message.guild.member(client.user).hasPermission("KICK_MEMBERS")) return message.reply("**I Don't Have ` KICK_MEMBERS ` Permission**");
+  let user = message.mentions.users.first();
+  let reason = message.content.split(" ").slice(2).join(" ");
+  /*let b5bzlog = client.channels.find("name", "5bz-log");
+
+  if(!b5bzlog) return message.reply("I've detected that this server doesn't have a 5bz-log text channel.");*/
+  if (message.mentions.users.size < 1) return message.reply("**منشن شخص**");
+  if(!reason) return message.reply ("**اكتب سبب الطرد**");
+  if (!message.guild.member(user)
+  .kickable) return message.reply("**لايمكنني طرد شخص اعلى من رتبتي يرجه اعطاء البوت رتبه عالي**");
+
+  message.guild.member(user).kick();
+
+  const kickembed = new Discord.RichEmbed()
+  .setAuthor(`KICKED!`, user.displayAvatarURL)
+  .setColor("RANDOM")
+  .setTimestamp()
+  .addField("**User:**",  '**[ ' + `${user.tag}` + ' ]**')
+  .addField("**By:**", '**[ ' + `${message.author.tag}` + ' ]**')
+  .addField("**Reason:**", '**[ ' + `${reason}` + ' ]**')
+  message.channel.send({
+    embed : kickembed
+  })
+}
+});
 
 
  client.on('message', message => {
@@ -1272,6 +1343,8 @@ const kingmas = [
      **${prefix}sug** → للاقتراح
 
      **${prefix}members** → معلومات الاعضاء
+
+     **${prefix}id** → هويتك
 
      **${prefix}role-info** → معلومات الرتبة المحددة
 
@@ -1316,7 +1389,9 @@ const kingmas = [
       **${prefix}bc** → ارسال رسالة لجميع اعضاء سيرفر
       
       **${prefix}role** →  لسحب او اعطاء رتب لعضو او لكل الاعضاء
-      `)
+     
+     **${prefix}delvoice** →  لحذف روم معين
+`)
       .addField(`**__اوامر الالعاب__**`,`
       **${prefix}عقاب** 
 
