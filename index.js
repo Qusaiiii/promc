@@ -1405,6 +1405,9 @@ message.channel.send(image)
      **${prefix}delvoice** →  لحذف روم معين
 `)
       .addField(`**__اوامر الالعاب__**`,`
+
+      **${prefix}skin** → سكن في ماين كرافت
+
       **${prefix}عقاب** 
 
       **${prefix}خواطر** 
