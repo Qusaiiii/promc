@@ -1342,7 +1342,7 @@ message.channel.send(image)
     }
 });
 
-if (message.content.startsWith(`${prefix}rmc`))
+if(message.content.startsWith(prefix + 'rmc')) {
     {
 let mentions = message.content.split(" ").slice(1,2).join(" ")
         var members = []
