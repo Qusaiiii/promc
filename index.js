@@ -1530,11 +1530,11 @@ constructor(client) {
     });	
     
 client.on('guildMemberAdd', member => {
-    member.guild.channels.get('ايدي الروم الاول').setName(`عدد الاعضاء: ${member.guild.memberCount}`);
+    member.guild.channels.get('474921986548695040').setName(`عدد الاعضاء: ${member.guild.memberCount}`);
     let humans = member.guild.memberCount - member.guild.members.filter(m => m.user.bot).size
-    member.guild.channels.get('ايدي الروم الثاني').setName(`عدد الاشخاص: ${humans}`);
+    member.guild.channels.get('474921998896857128').setName(`عدد الاشخاص: ${humans}`);
     let bots = member.guild.members.filter(m => m.user.bot).size
-    member.guild.channels.get('ايدي الروم الثالث').setName(`عدد البوتات: ${bots}`);
+    member.guild.channels.get('474922016684769291').setName(`عدد البوتات: ${bots}`);
 });
 
 client.login(process.env.BOT_TOKEN);
